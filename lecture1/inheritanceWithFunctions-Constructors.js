@@ -36,7 +36,7 @@
 
     var dog = new Dog("Charly", 1, "Europa");
     var cat = new Cat("Pussy", 2, "America");
-    var woodpecker = new Woodpecker("Jogn", 3, "Australia");
+    var woodpecker = new Woodpecker("John", 3, "Australia");
 
     dog.say();
     cat.say();
@@ -45,7 +45,7 @@
 
 
 
-    var getTypep = function(object){
+    var getType = function(object){
         if (object.hasOwnProperty("sound")){
             switch (object.sound){
                 case "meuw": return "Cat";
@@ -56,12 +56,12 @@
         return "unknown";
     };
 
-    console.log(getTypep(cat));
-    console.log(getTypep(dog));
-    console.log(getTypep(woodpecker));
+    console.log(getType(cat));
+    console.log(getType(dog));
+    console.log(getType(woodpecker));
 
-    //modified getTypep
-    getTypep = function(){
+    //modified getType
+    getType = function(){
         if (this.hasOwnProperty("sound")){
             switch (this.sound){
                 case "meuw": return "Cat";
@@ -72,9 +72,9 @@
         return "unknown";
     };
 
-    console.log(getTypep.call(cat));
-    console.log(getTypep.call(dog));
-    console.log(getTypep.call(woodpecker));
+    console.log(getType.call(cat));
+    console.log(getType.call(dog));
+    console.log(getType.call(woodpecker));
 })();
 
 

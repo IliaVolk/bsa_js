@@ -50,9 +50,6 @@
     cat.say();
     woodpecker.say();
 
-    cat.goAway();
-    dog.goAway();
-    woodpecker.goAway();
 
 
 

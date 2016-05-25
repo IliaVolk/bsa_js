@@ -67,8 +67,5 @@
     charley.say();
     john.say();
 
-    pussy.goAway();
-    charley.goAway();
 
-    console.log(pussy instanceof cat);
 })();

@@ -1,67 +1,74 @@
-(function(){
+(function () {
 
 
 
-    var Animal = {
-        constructor:function(name, sound, age, region){
+    //animal is not a constructor, capital letter should be lowercase
+    var animal = {
+        constructor: function (name, sound, age, region) {
             this.age = age;
             this.name = name;
             this.sound = sound;
             this.region = region;
-
-            this.say = function(){
-                console.log(this.name + " says " + this.sound);
-            };
             return this;
+        },
+        say: function () {
+            console.log(this.name + " says " + this.sound);
         }
     };
 
-    var Cat = Object.create(Animal, {
-        constructor: {value: function(name, age, region){
-            Animal.constructor.call(this, name, "meuw", age, region);
-
-            this.goAway = function(place){
+    var cat = Object.create(animal, {
+        constructor: {
+            value: function (name, age, region) {
+                animal.constructor.call(this, name, "meuw", age, region);
+                return this;
+            }
+        },
+        goAway: {
+            value: function (place) {
                 console.log(this.name + " quietly goes to " + (place || this.region))
-            };
-            return this;
-        }}
+            }
+        }
     });
 
-    var Dog = Object.create(Animal, {
-        constructor: {value: function(name, age, region){
-            Animal.constructor.call(this, name, "back", age, region);
-
-            this.goAway = function(place){
+    var dog = Object.create(animal, {
+        constructor: {
+            value: function (name, age, region) {
+                animal.constructor.call(this, name, "back", age, region);
+                return this;
+            }
+        },
+        goAway: {
+            value: function (place) {
                 console.log(this.name + " runs to " + (place || this.region))
-            };
-            return this;
-        }}
+            }
+        }
     });
 
-    var Woodpecker = Object.create(Animal, {
-        constructor: {value: function(name, age, region){
-            Animal.constructor.call(this, name, "tock-tock", age, region);
-
-            this.goAway = function(place){
-                console.log(this.name + " flies to " + (place || this.region))
-            };
-            return this;
-        }}
+    var woodpecker = Object.create(animal, {
+        constructor: {
+            value: function (name, age, region) {
+                animal.constructor.call(this, name, "tock-tock", age, region);
+                return this;
+            }
+        },
+        goAway: {
+            value: function (place) {
+                console.log(this.name + " flies to " + (place || this.region));
+            }
+        }
     });
-    var cat = Object.create(Cat).constructor("Pussy", 1, "Europa");
-    var dog = Object.create(Dog).constructor("Charly", 2, "America");
-    var woodpecker = Object.create(Woodpecker).constructor("John", 2, "Australia");
+
+    var pussy = Object.create(cat).constructor("Pussy", 1, "Europa");
+    var charley = Object.create(dog).constructor("Charley", 2, "America");
+    var john = Object.create(woodpecker).constructor("John", 2, "Australia");
 
 
-    cat.say();
-    dog.say();
-    woodpecker.say();
+    pussy.say();
+    charley.say();
+    john.say();
 
+    pussy.goAway();
+    charley.goAway();
 
-
-    Animal.m = function(){
-        console.log(this.name);
-    };
-    cat.m();
-    dog.m();
+    console.log(pussy instanceof cat);
 })();

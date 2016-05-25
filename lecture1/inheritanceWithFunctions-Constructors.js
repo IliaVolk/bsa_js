@@ -5,34 +5,42 @@
         this.sound = sound;
         this.age = age;
         this.region = region;
-        this.say = function(){
-            console.log(this.name + " says " + this.sound);
-        }
+    };
+    Animal.prototype.say = function(){
+        console.log(this.name + " says " + this.sound);
     };
 
     var Cat = function(name, age, region){
         Animal.call(this, name, "meuw", age, region);
-        this.goAway = function(place){
-            console.log(this.name + " quietly goes to " + (place || region));
-        }
     };
-    Cat.prototype = Animal.prototype;
+
+    //without using Object.create functions-constructors Cat, Dog and Woodpecker will have same prototype,
+    //so Dog.prototype.goAway = function(){..} will override Cat.prototype.goAway and
+    //all new Cat(..) objects will use dog's goAway
+    Cat.prototype = Object.create(Animal.prototype);
+    Cat.prototype.goAway = function(place){
+        console.log("cat " + this.name + " quietly goes to " + (place || this.region));
+    };
 
     var Dog = function(name, age, region){
         Animal.call(this, name, "back", age, region);
-        this.goAway = function(place){
-            console.log(this.name + " runs to " + (place || region));
-        }
     };
-    Dog.prototype = Animal.prototype;
+    Dog.prototype = Object.create(Animal.prototype);
+    Dog.prototype.goAway = function(place){
+        console.log("dog " + this.name + " runs to " + (place || this.region));
+    };
+
+
 
     var Woodpecker = function(name, age, region){
         Animal.call(this, name, "tock-tock", age, region);
-        this.goAway = function(place){
-            console.log(this.name + " flies to " + (place || region));
-        }
     };
-    Woodpecker.prototype = Animal.prototype;
+    Woodpecker.prototype = Object.create(Animal.prototype);
+    Woodpecker.prototype.goAway = function(place){
+        console.log("woodpecker " + this.name + " flies to " + (place || this.region));
+    };
+
+
 
     var dog = new Dog("Charly", 1, "Europa");
     var cat = new Cat("Pussy", 2, "America");
@@ -42,6 +50,9 @@
     cat.say();
     woodpecker.say();
 
+    cat.goAway();
+    dog.goAway();
+    woodpecker.goAway();
 
 
 
@@ -75,6 +86,7 @@
     console.log(getType.call(cat));
     console.log(getType.call(dog));
     console.log(getType.call(woodpecker));
+
 })();
 
 

@@ -7,22 +7,22 @@ var ActiveCheckBox;
 (function(){
     var checkBoxDataId = 0;
     var nextCheckBoxData = function(){
-        return "data-active-checkbox-"+checkBoxDataId++;
+        return "data-checkbox-checked"+checkBoxDataId++;
     };
     ActiveCheckBox = function (handler, text) {
         this.$element = $("<li><a><input type='checkbox'>"+text+"</a></li>");
-        this.dataAttr = nextCheckBoxData();
+        this.isChecked = nextCheckBoxData();
         this.handler = handler;
         this.$element.click(this.getHandler());
     };
     ActiveCheckBox.prototype.getHandler = function(){
-        var dataAttr = this.dataAttr;
+        var isChecked = this.isChecked;
         var handler = this.handler;
         return function (e) {
-            if (this.attr(dataAttr)){
-                this.removeAttr(dataAttr);
+            if (this.attr(isChecked)){
+                this.removeAttr(isChecked);
             }else {
-                this.attr(dataAttr, true);
+                this.attr(isChecked, true);
             }
             var checked = !this.find("input:checkbox").get()[0].checked;
             if (e.target.checked !== undefined){
@@ -35,7 +35,7 @@ var ActiveCheckBox;
     };
     ActiveCheckBox.prototype.setNotChecked = function(){
         this.$element.
-            removeAttr(this.dataAttr).
+            removeAttr(this.isChecked).
             find("input:checkbox").get()[0].checked = false;
     }
 

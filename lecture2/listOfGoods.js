@@ -16,107 +16,80 @@ var keyCode = {
         $deleteCrossedButton,
         $itemList,
         $buttonField,
-        $addItemInputField,
-        defaultEventListener = {
-            mouseenter: function (e) {
-                $("#" + $(e.target).
-                    attr("data-item-id")).
-                    addClass("mouse-entered").
-                    find("button").
-                    removeClass("invisible");
-            },
-            mouseleave: function (e) {
-                $("#" + $(e.target).
-                    attr("data-item-id")).
-                    removeClass("mouse-entered").
-                    find("button").
-                    addClass("invisible");
-            },
+        $addItemInputField;
 
-            click: function (e) {
-                var $targetItem = $("#" + $(e.target).attr("data-item-id"));
-                switch ($(e.target).attr("data-action")) {
-                    case "deleteItem":
-                        Application.deleteItem($targetItem);
-                        break;
-                    case "crossItem":
-                        if (!$targetItem.attr("data-is-crossed"))
-                            Application.crossItem($targetItem);
-                        else Application.uncrossItem($targetItem);
-                        $crossAllCheckBox.setNotChecked();
-
-                        break;
-                }
-            },
-            doubleClick: function (e) {
-                switch ($(e.target).attr("data-action")) {
-                    case "editItem":
-                        var $targetItem = $("#" + $(e.target).attr("data-item-id")),
-                            $contentField = $($targetItem.find("span")),
-                            text = $contentField.text(),
-                            $input = $("<input type='text'>");
-                        $contentField.empty();
-                        $contentField.append($input);
-                        $input.
-                            attr("data-previous-text", text).
-                            attr("data-item-id", $targetItem.attr("id")).
-                            val(text);
-                        Application.currentEventListener = whileEditingItemEventListener;
-                        break;
-                }
-            }
-        },
-        whileEditingItemEventListener = Object.create(defaultEventListener, {
-            keyup: {
-                value: function (e) {
-                    try {
-                        var $input = $(e.target);
-                        var $targetItem = $("#" + $input.attr("data-item-id"));
-                        var text = $input.val();
-
-                        switch (e.keyCode) {
-                            case keyCode.ENTER:
-                                break;
-                            case keyCode.ESCAPE:
-                                text = $input.attr("data-previous-text");
-                                break;
-                            default :
-                                return;
-                        }
-                        $input.remove();
-
-                        $targetItem.find("span").append(text);
-                        Application.currentEventListener = defaultEventListener;
-                    } catch (e) {
-                        //safe return
-                    }
-                }
-            }
-        });
-
-    Application.currentEventListener = defaultEventListener;
-
-
-    Application.eternalEventListener = {
-        keyup: function (e) {
-            if (Application.currentEventListener.keyup)
-                Application.currentEventListener.keyup(e);
-        },
-        click: function (e) {
-            if (Application.currentEventListener.click)
-                Application.currentEventListener.click(e);
-        },
-        doubleClick: function (e) {
-            if (Application.currentEventListener.doubleClick)
-                Application.currentEventListener.doubleClick(e);
-        },
+    Application.eventListener = {
         mouseenter: function (e) {
-            if (Application.currentEventListener.mouseenter)
-                Application.currentEventListener.mouseenter(e);
+            $("#" + $(e.target).
+                attr("data-item-id")).
+                addClass("mouse-entered").
+                find("button").
+                removeClass("invisible");
         },
         mouseleave: function (e) {
-            if (Application.currentEventListener.mouseleave)
-                Application.currentEventListener.mouseleave(e);
+            $("#" + $(e.target).
+                attr("data-item-id")).
+                removeClass("mouse-entered").
+                find("button").
+                addClass("invisible");
+        },
+
+        click: function (e) {
+            var $targetItem = $("#" + $(e.target).attr("data-item-id"));
+            switch ($(e.target).attr("data-action")) {
+                case "deleteItem":
+                    Application.deleteItem($targetItem);
+                    break;
+                case "crossItem":
+                    if (!$targetItem.attr("data-is-crossed"))
+                        Application.crossItem($targetItem);
+                    else Application.uncrossItem($targetItem);
+                    $crossAllCheckBox.setNotChecked();
+
+                    break;
+            }
+        },
+        doubleClick: function (e) {
+            switch ($(e.target).attr("data-action")) {
+                case "editItem":
+                    var $targetItem = $("#" + $(e.target).attr("data-item-id")),
+                        $contentField = $($targetItem.find("span")),
+                        text = $contentField.text(),
+                        $input = $("<input type='text'>");
+                    $contentField.empty();
+                    $contentField.append($input);
+                    $input.
+                        attr("data-previous-text", text).
+                        attr("data-item-id", $targetItem.attr("id")).
+                        val(text);
+                    Application.currentEventListener = whileEditingItemEventListener;
+                    break;
+            }
+        },
+        keyup: {
+            value: function (e) {
+                try {
+                    var $input = $(e.target);
+                    var $targetItem = $("#" + $input.attr("data-item-id"));
+                    var text = $input.val();
+
+                    switch (e.keyCode) {
+                        case keyCode.ENTER:
+                            break;
+                        case keyCode.ESCAPE:
+                            text = $input.attr("data-previous-text");
+                            break;
+                        default :
+                            return;
+                    }
+                    $input.remove();
+
+                    $targetItem.find("span").append(text);
+                    Application.currentEventListener = defaultEventListener;
+                } catch (e) {
+                    //safe return
+                }
+            }
         }
     };
     Application.nextId = function () {
@@ -199,9 +172,9 @@ var keyCode = {
 
         $container = $("#" + containerId).
             append($itemList, "New Item: ",$addItemInputField, $buttonField).
-            click(this.eternalEventListener.click).
-            dblclick(this.eternalEventListener.doubleClick).
-            keyup(this.eternalEventListener.keyup).
+            click(this.eventListener.click).
+            dblclick(this.eventListener.doubleClick).
+            keyup(this.eventListener.keyup).
             addClass("container");
 
 

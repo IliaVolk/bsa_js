@@ -32,8 +32,9 @@ var createListItem = function (text) {
         attr("data-item-id", itemId).
         addClass("row").
         append($crossedCheckbox, $contentField, $deleteButton).
-        mouseenter(Application.onMouseEnter).
-        mouseleave(Application.onMouseLeave);
+        mouseenter(Application.eternalEventListener.mouseenter).
+        mouseleave(Application.eternalEventListener.mouseleave
+    );
     return $item;
 };
 

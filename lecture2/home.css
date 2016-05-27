@@ -9,7 +9,6 @@
 .row {
     max-width: 350px;
     box-shadow: 0 0 2px #777777;
-    padding-top: 5px;
 }
 .mouse-entered{
     box-shadow: 0 0 5px #777777;
@@ -25,7 +24,7 @@ a:hover{
 .inline{
     display:inline;
 }
-*[unselectable=true] {
+.unselectable {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;

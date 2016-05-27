@@ -6,7 +6,7 @@
 var createListItem = function (text) {
     var $item = $("<div></div>"),
         $deleteButton = $("<button>"),
-        $crossedCheckbox = $("<input class='btn btn-warning' type='checkbox'>"),
+        $crossedCheckbox = $("<input class='checkbox-inline' type='checkbox'>"),
         $contentField = $("<span></span>"),
         itemId = Application.nextId();
 

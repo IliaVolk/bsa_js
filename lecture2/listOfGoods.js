@@ -62,33 +62,29 @@ var keyCode = {
                         attr("data-previous-text", text).
                         attr("data-item-id", $targetItem.attr("id")).
                         val(text);
-                    Application.currentEventListener = whileEditingItemEventListener;
                     break;
             }
         },
-        keyup: {
-            value: function (e) {
-                try {
-                    var $input = $(e.target);
-                    var $targetItem = $("#" + $input.attr("data-item-id"));
-                    var text = $input.val();
+        keyup: function (e) {
+            try {
+                var $input = $(e.target);
+                var $targetItem = $("#" + $input.attr("data-item-id"));
+                var text = $input.val();
 
-                    switch (e.keyCode) {
-                        case keyCode.ENTER:
-                            break;
-                        case keyCode.ESCAPE:
-                            text = $input.attr("data-previous-text");
-                            break;
-                        default :
-                            return;
-                    }
-                    $input.remove();
-
-                    $targetItem.find("span").append(text);
-                    Application.currentEventListener = defaultEventListener;
-                } catch (e) {
-                    //safe return
+                switch (e.keyCode) {
+                    case keyCode.ENTER:
+                        break;
+                    case keyCode.ESCAPE:
+                        text = $input.attr("data-previous-text");
+                        break;
+                    default :
+                        return;
                 }
+                $input.remove();
+
+                $targetItem.find("span").append(text);
+            } catch (e) {
+                //safe return
             }
         }
     };
@@ -151,8 +147,7 @@ var keyCode = {
         $addItemInputField = $("<input type='text'>");
         $buttonField.
             append($crossAllCheckBox.$element, $deleteCrossedButton).
-            addClass("nav nav-pills row").
-            attr("unselectable", "true");
+            addClass("nav nav-pills unselectable");
 
         $itemList.
             addClass("container");
@@ -170,12 +165,13 @@ var keyCode = {
         $deleteCrossedButton.click(this.deleteCrossed.bind(this));
 
 
-        $container = $("#" + containerId).
-            append($itemList, "New Item: ",$addItemInputField, $buttonField).
+        $container = $("#" + containerId);
+        $container.
             click(this.eventListener.click).
             dblclick(this.eventListener.doubleClick).
             keyup(this.eventListener.keyup).
-            addClass("container");
+            addClass("container").
+            append($itemList, "New Item: ", $addItemInputField, $buttonField);
 
 
     };

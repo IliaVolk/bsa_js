@@ -10,39 +10,27 @@ var createListItem;
         return id++;
     };
     createListItem = function (text) {
-        var $item = $("<div></div>"),
-            $deleteButton = $("<button>"),
-            $crossedCheckbox = $("<input class='checkbox-inline' type='checkbox'>"),
-            $contentField = $("<span></span>"),
-            itemId = nextId();
-
-        $deleteButton.
-            attr("data-item-id", itemId).
-            attr("data-action", "deleteItem").
-            addClass("invisible pull-right btn btn-danger").
-            append("Delete");
-
-        $contentField.
-            attr("data-edit", false).
-            attr("data-item-id", itemId).
-            attr("data-action", "editItem").
-            append(text);
-
-
-        $crossedCheckbox.
-            attr("data-item-id", itemId).
-            attr("data-action", "crossItem");
-        $item.
+        text = Application.escapeCharacters(text);
+        var itemId = nextId();
+        return $("<div></div>").
             attr("id", itemId).
+            attr("allocatable", "").
             attr("data-action", "editItem").
             attr("data-item-id", itemId).
-            addClass("row").
-            append($crossedCheckbox, $contentField, $deleteButton).
-            mouseenter(Application.onMouseEnter).
-            mouseleave(Application.onMouseLeave);
-
-        return $item;
+            addClass("row list-item").
+            append(
+            $("<input class='checkbox-inline' type='checkbox'>").
+                attr("data-item-id", itemId).
+                attr("data-action", "crossItem"),
+            $("<span></span>").
+                attr("data-item-id", itemId).
+                attr("data-action", "editItem").
+                append(text),
+            $("<button>").
+                attr("data-item-id", itemId).
+                attr("data-action", "deleteItem").
+                addClass("invisible pull-right btn btn-danger").
+                append("Delete")
+        );
     };
-
-
 })();

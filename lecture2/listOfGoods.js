@@ -7,6 +7,11 @@ var Application = {};
 var keyCode = {
     ENTER: 13,
     ESCAPE: 27
+
+};
+var keyEscapeCharacters = {
+    "<": "&lt;",
+    ">": "&gt;"
 };
 
 (function (Application) {
@@ -17,81 +22,95 @@ var keyCode = {
         $itemList,
         $buttonField,
         $addItemInputField;
-    Application.onMouseEnter = function (e) {
+
+
+    Application.escapeCharacters = function (text) {
+        var textToReturn = text;
+        $.each(keyEscapeCharacters, function (key, escape) {
+            textToReturn = textToReturn.replace(new RegExp(key, "g"), escape);
+        });
+        return textToReturn;
+    };
+    Application.deEscapeCharacters = function (text) {
+        var textToReturn = text;
+        $.each(keyEscapeCharacters, function (key, escape) {
+            textToReturn = textToReturn.replace(new RegExp(escape, "g"), key);
+        });
+        return textToReturn;
+
+    };
+    Application.onMouseEnterItem = function (e) {
         $("#" + $(e.target).
             attr("data-item-id")).
             addClass("mouse-entered").
             find("button").
             removeClass("invisible");
     };
-    Application.onMouseLeave = function (e) {
+    Application.onMouseLeaveItem = function (e) {
         $("#" + $(e.target).
             attr("data-item-id")).
             removeClass("mouse-entered").
             find("button").
             addClass("invisible");
     };
+    Application.onDeleteItem = function (e) {
+        Application.deleteItem(
+            $("#" + $(e.target).attr("data-item-id")));
+    };
 
-    Application.onClick = function (e) {
+    Application.onCrossItem = function (e) {
         var $targetItem = $("#" + $(e.target).attr("data-item-id"));
-        switch ($(e.target).attr("data-action")) {
-            case "deleteItem":
-                Application.deleteItem($targetItem);
-                break;
-            case "crossItem":
-                if (!$targetItem.attr("data-is-crossed"))
-                    Application.crossItem($targetItem);
-                else Application.uncrossItem($targetItem);
-                $crossAllCheckBox.setNotChecked();
-
-                break;
+        if (!$targetItem.attr("data-is-crossed")) {
+            Application.crossItem($targetItem);
+        } else {
+            Application.uncrossItem($targetItem);
+            $crossAllCheckBox.setNotChecked();
         }
+        //prevent from editing item while crossing
+        e.stopPropagation();
     };
-    Application.onDoubleClick = function (e) {
-        switch ($(e.target).attr("data-action")) {
-            case "editItem":
-                var $targetItem = $("#" + $(e.target).attr("data-item-id")),
-                    $contentField = $($targetItem.find("span")),
-                    text = $contentField.text(),
-                    $input = $("<input type='text'>");
 
-                if ($contentField.find("input").length){
-                    return;
-                }
-                $contentField.empty();
-                $contentField.append($input);
-                $input.
-                    attr("data-previous-text", text).
-                    attr("data-item-id", $targetItem.attr("id")).
-                    val(text);
+    Application.onItemEdit = function (e) {
+        var $targetItem = $("#" + $(e.target).attr("data-item-id")),
+            $contentField = $($targetItem.find("span")),
+            text = Application.deEscapeCharacters($contentField.text()),
+            $input = $("<input type='text'>");
+
+        if ($contentField.find("input").length) {
+            //if item is being edited
+            return;
+        }
+        $contentField.empty();
+        $contentField.append($input);
+        $input.
+            attr("data-previous-text", text).
+            attr("data-action", "editItemEnd").
+            attr("data-item-id", $targetItem.attr("id")).
+            val(text);
+    };
+
+    Application.onEditItemEnd = function (e) {
+        var $input = $(e.target),
+            $targetItem = $("#" + $input.attr("data-item-id")),
+            text = $input.val();
+
+        switch (e.keyCode) {
+            case keyCode.ENTER:
                 break;
+            case keyCode.ESCAPE:
+                text = $input.attr("data-previous-text");
+                break;
+            default :
+                return;
         }
+        $input.remove();
+        $targetItem.find("span").append(Application.escapeCharacters(text));
     };
-    Application.onKeyUp = function (e) {
-        try {
-            var $input = $(e.target);
-            var $targetItem = $("#" + $input.attr("data-item-id"));
-            var text = $input.val();
 
-            switch (e.keyCode) {
-                case keyCode.ENTER:
-                    break;
-                case keyCode.ESCAPE:
-                    text = $input.attr("data-previous-text");
-                    break;
-                default :
-                    return;
-            }
-            $input.remove();
-
-            $targetItem.find("span").append(text);
-        } catch (e) {
-            //safe return
-        }
-    };
 
     Application.addItem = function (text) {
-        $itemList.append(createListItem(text));
+        if (text)
+            $itemList.append(createListItem(text));
     };
 
     Application.deleteItem = function ($item) {
@@ -122,8 +141,7 @@ var keyCode = {
             function () {
                 var $item = $(this);
                 cross ? Application.crossItem($item) : Application.uncrossItem($item);
-                var checkbox = $item.find("input:checkbox").get()[0];
-                checkbox.checked = cross;
+                $item.find("input:checkbox").get()[0].checked = cross;
             }
         );
     };
@@ -136,41 +154,36 @@ var keyCode = {
                 Application.toggleCross(checked);
             }, "Cross All");
 
-        $deleteCrossedButton = $("<li><a>DeleteCrossed</a></li>");
-        $itemList = $("<div></div>");
-        $buttonField = $("<ul></ul>");
-        $addItemInputField = $("<input type='text'>");
-        $buttonField.
+        $deleteCrossedButton = $("<li><a>DeleteCrossed</a></li>")
+            .click(this.deleteCrossed);
+
+        $itemList = $("<div></div>").
+            addClass("container");
+
+        $buttonField = $("<ul></ul>").
             append($crossAllCheckBox.$element, $deleteCrossedButton).
             addClass("nav nav-pills unselectable");
 
-        $itemList.
-            addClass("container");
-
-        $addItemInputField.keyup(function (e) {
+        $addItemInputField = $("<input type='text'>")
+            .keyup(function (e) {
                 if (e.keyCode === keyCode.ENTER) {
                     Application.addItem($addItemInputField.val());
                     $addItemInputField.val("");
                     $crossAllCheckBox.setNotChecked();
                 }
-                e.stopPropagation();
             }
         );
 
-        $deleteCrossedButton.click(this.deleteCrossed.bind(this));
-
-
-        $container = $("#" + containerId);
-        $container.
-            click(this.onClick).
-            dblclick(this.onDoubleClick).
-            keyup(this.onKeyUp).
+        $container = $("#" + containerId).
+            on("dblclick", "[data-action='editItem']", this.onItemEdit).
+            on("click", "[data-action='crossItem']", this.onCrossItem).
+            on("click", "[data-action='deleteItem']", this.onDeleteItem).
+            on("keyup", "[data-action='editItemEnd']", this.onEditItemEnd).
+            on("mouseenter", "[allocatable]", this.onMouseEnterItem).
+            on("mouseleave", "[allocatable]", this.onMouseLeaveItem).
             addClass("container").
             append("<h1>List of goods</h1>", $itemList, "New Item: ", $addItemInputField, $buttonField);
-
-
     };
-
 
 })(Application);
 

@@ -1,15 +1,19 @@
 
+#list-of-goods-container {
 
+}
+
+.list-item {
+    max-width: 350px;
+    box-shadow: 0 0 2px #777777;
+    overflow: auto;
+}
 
 .crossed {
     text-decoration: line-through;
     opacity: 0.5;
 }
 
-.row {
-    max-width: 350px;
-    box-shadow: 0 0 2px #777777;
-}
 .mouse-entered{
     box-shadow: 0 0 5px #777777;
 }
@@ -30,6 +34,7 @@ a:hover{
     -ms-user-select: none;
     user-select: none;
 }
+
 
 
 

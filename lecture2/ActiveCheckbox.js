@@ -5,24 +5,18 @@
 var ActiveCheckBox;
 
 (function(){
-    var checkBoxDataId = 0;
-    var nextCheckBoxData = function(){
-        return "data-checkbox-checked"+checkBoxDataId++;
-    };
     ActiveCheckBox = function (handler, text) {
         this.$element = $("<li><a><input type='checkbox'>"+text+"</a></li>");
-        this.isChecked = nextCheckBoxData();
         this.handler = handler;
         this.$element.click(this.getHandler());
     };
     ActiveCheckBox.prototype.getHandler = function(){
-        var isChecked = this.isChecked;
         var handler = this.handler;
         return function (e) {
-            if (this.attr(isChecked)){
-                this.removeAttr(isChecked);
+            if (this.attr("data-is-checked")) {
+                this.removeAttr("data-is-checked");
             }else {
-                this.attr(isChecked, true);
+                this.attr("data-is-checked", true);
             }
             var checked = !this.find("input:checkbox").get()[0].checked;
             if (e.target.checked !== undefined){
@@ -35,7 +29,7 @@ var ActiveCheckBox;
     };
     ActiveCheckBox.prototype.setNotChecked = function(){
         this.$element.
-            removeAttr(this.isChecked).
+            removeAttr("data-is-checked").
             find("input:checkbox").get()[0].checked = false;
     }
 

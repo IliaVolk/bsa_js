@@ -43,7 +43,8 @@ var keyCode = {
             attr("data-item-id")).
             addClass("mouse-entered").
             find("button").
-            removeClass("invisible");
+            removeClass("invisible")
+        ;
     };
 
     Application.onMouseLeaveItem = function (e) {
@@ -51,7 +52,8 @@ var keyCode = {
             attr("data-item-id")).
             removeClass("mouse-entered").
             find("button").
-            addClass("invisible");
+            addClass("invisible")
+        ;
     };
 
     Application.onDeleteItem = function (e) {
@@ -144,6 +146,7 @@ var keyCode = {
                 }
             }
         );
+        $crossAllCheckBox.setNotChecked();
     };
 
     Application.toggleCross = function (cross) {

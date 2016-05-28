@@ -18,9 +18,6 @@
     box-shadow: 0 0 5px #777777;
 }
 
-.invisible{
-    opacity: 0;
-}
 a:hover{
     cursor: pointer;
 }

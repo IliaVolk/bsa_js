@@ -10,6 +10,7 @@ var ActiveCheckBox;
         this.handler = handler;
         this.$element.click(this.getHandler());
     };
+
     ActiveCheckBox.prototype.getHandler = function(){
         var handler = this.handler;
         return function (e) {

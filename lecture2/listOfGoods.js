@@ -9,11 +9,6 @@ var keyCode = {
     ESCAPE: 27
 
 };
-var keyEscapeCharacters = {
-    "<": "&lt;",
-    ">": "&gt;"
-};
-
 (function (Application) {
     var $container,
         id = 0,
@@ -21,8 +16,11 @@ var keyEscapeCharacters = {
         $deleteCrossedButton,
         $itemList,
         $buttonField,
-        $addItemInputField;
-
+        $addItemInputField,
+        keyEscapeCharacters = {
+            "<": "&lt;",
+            ">": "&gt;"
+        };
 
     Application.escapeCharacters = function (text) {
         var textToReturn = text;
@@ -31,14 +29,15 @@ var keyEscapeCharacters = {
         });
         return textToReturn;
     };
+
     Application.deEscapeCharacters = function (text) {
         var textToReturn = text;
         $.each(keyEscapeCharacters, function (key, escape) {
             textToReturn = textToReturn.replace(new RegExp(escape, "g"), key);
         });
         return textToReturn;
-
     };
+
     Application.onMouseEnterItem = function (e) {
         $("#" + $(e.target).
             attr("data-item-id")).
@@ -46,6 +45,7 @@ var keyEscapeCharacters = {
             find("button").
             removeClass("invisible");
     };
+
     Application.onMouseLeaveItem = function (e) {
         $("#" + $(e.target).
             attr("data-item-id")).
@@ -53,6 +53,7 @@ var keyEscapeCharacters = {
             find("button").
             addClass("invisible");
     };
+
     Application.onDeleteItem = function (e) {
         Application.deleteItem(
             $("#" + $(e.target).attr("data-item-id")));
@@ -107,7 +108,13 @@ var keyEscapeCharacters = {
         $targetItem.find("span").append(Application.escapeCharacters(text));
     };
 
-
+    Application.onAddItem = function (e) {
+        if (e.keyCode === keyCode.ENTER) {
+            Application.addItem($addItemInputField.val());
+            $addItemInputField.val("");
+            $crossAllCheckBox.setNotChecked();
+        }
+    };
     Application.addItem = function (text) {
         if (text)
             $itemList.append(createListItem(text));
@@ -122,11 +129,13 @@ var keyEscapeCharacters = {
             attr("data-is-crossed", true).
             find("span").addClass("crossed");
     };
+
     Application.uncrossItem = function ($item) {
         $item.
             removeAttr("data-is-crossed").
             find("span").removeClass("crossed");
     };
+
     Application.deleteCrossed = function () {
         $itemList.find(".row").each(
             function () {
@@ -136,6 +145,7 @@ var keyEscapeCharacters = {
             }
         );
     };
+
     Application.toggleCross = function (cross) {
         $itemList.find(".row").each(
             function () {
@@ -165,14 +175,7 @@ var keyEscapeCharacters = {
             addClass("nav nav-pills unselectable");
 
         $addItemInputField = $("<input type='text'>")
-            .keyup(function (e) {
-                if (e.keyCode === keyCode.ENTER) {
-                    Application.addItem($addItemInputField.val());
-                    $addItemInputField.val("");
-                    $crossAllCheckBox.setNotChecked();
-                }
-            }
-        );
+            .keyup(Application.onAddItem);
 
         $container = $("#" + containerId).
             on("dblclick", "[data-action='editItem']", this.onItemEdit).

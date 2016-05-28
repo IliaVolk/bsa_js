@@ -164,7 +164,7 @@ var keyCode = {
                 Application.toggleCross(checked);
             }, "Cross All");
 
-        $deleteCrossedButton = $("<li><a>DeleteCrossed</a></li>")
+        $deleteCrossedButton = $("<li><a>Delete Crossed</a></li>")
             .click(this.deleteCrossed);
 
         $itemList = $("<div></div>").

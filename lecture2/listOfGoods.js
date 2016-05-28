@@ -128,12 +128,14 @@ var keyCode = {
 
     Application.crossItem = function ($item) {
         $item.
-            attr("data-is-crossed", true);
+            attr("data-is-crossed", true).
+            find("span").addClass("crossed");
     };
 
     Application.uncrossItem = function ($item) {
         $item.
-            removeAttr("data-is-crossed");
+            removeAttr("data-is-crossed").
+            find("span").removeClass("crossed");
     };
 
     Application.deleteCrossed = function () {

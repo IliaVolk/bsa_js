@@ -1,0 +1,105 @@
+
+body {
+    background-color: lightblue;
+    font-size: 20px;
+}
+
+div {
+    border: 1px solid #000000;
+}
+
+.header {
+    height: 100px;
+    display: table-row;
+}
+
+.header-text, .header-image {
+    display: table-cell;
+}
+
+.header-text {
+    vertical-align: middle;
+}
+
+.header-image {
+    height: inherit;
+}
+
+.nav {
+    float: left;
+    background-color: lightgreen;
+    width: 25%;
+}
+
+.nav-item {
+    padding: 5px;
+    border: 2px solid darkgreen;
+}
+
+.content {
+    float: left;
+    width: 74%;
+
+}
+
+.centred-content, .centred-vertically-content {
+    width: 100%;
+    float: left;
+    clear: left;
+}
+
+.centred-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.centred-item, .centred-one-in-line {
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    display: flex;
+}
+
+.centred-item, .centred-vertically-item {
+    background-color: pink;
+    width: 30%;
+    margin: 1.5%;
+    height: 200px;
+    position: relative;
+}
+
+.centred-vertically-content {
+    display: table;
+    border-spacing: 15px;
+}
+
+.centred-vertically-item {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 15px;
+}
+
+.centred-one-in-line {
+    background-color: pink;
+}
+
+.centred-item:nth-child(3n):after, .centred-vertically-item:nth-child(3n):after {
+    right: 0;
+
+}
+
+.centred-item:first-child:before, .centred-vertically-item:first-child:before,
+.centred-item:nth-child(4n):before, .centred-vertically-item:nth-child(4n):before {
+    left: 0;
+}
+
+.centred-item:nth-child(3n):after, .centred-vertically-item:nth-child(3n):after,
+.centred-item:first-child:before, .centred-vertically-item:first-child:before,
+.centred-item:nth-child(4n):before, .centred-vertically-item:nth-child(4n):before {
+    top: 0;
+    content: '';
+    background: red;
+    width: 5px;
+    height: 100%;
+    position: absolute;
+}

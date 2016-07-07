@@ -1,27 +1,21 @@
-
 body {
     background-color: lightblue;
     font-size: 20px;
 }
-
-div {
-    border: 1px solid #000000;
-}
-
 .header {
     height: 100px;
     display: table-row;
 }
 
-.header-text, .header-image {
+.header > div, .header > img {
     display: table-cell;
 }
 
-.header-text {
+.header > div {
     vertical-align: middle;
 }
 
-.header-image {
+.header > img {
     height: inherit;
 }
 
@@ -31,7 +25,7 @@ div {
     width: 25%;
 }
 
-.nav-item {
+.nav > div {
     padding: 5px;
     border: 2px solid darkgreen;
 }
@@ -39,67 +33,51 @@ div {
 .content {
     float: left;
     width: 74%;
-
 }
-
-.centred-content, .centred-vertically-content {
-    width: 100%;
-    float: left;
-    clear: left;
-}
-
-.centred-content {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.centred-item, .centred-one-in-line {
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    display: flex;
-}
-
-.centred-item, .centred-vertically-item {
-    background-color: pink;
-    width: 30%;
-    margin: 1.5%;
-    height: 200px;
-    position: relative;
-}
-
-.centred-vertically-content {
-    display: table;
-    border-spacing: 15px;
-}
-
-.centred-vertically-item {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 15px;
-}
-
-.centred-one-in-line {
-    background-color: pink;
-}
-
-.centred-item:nth-child(3n):after, .centred-vertically-item:nth-child(3n):after {
+.items-have-border-line > div:nth-child(3n):after {
     right: 0;
 
 }
 
-.centred-item:first-child:before, .centred-vertically-item:first-child:before,
-.centred-item:nth-child(4n):before, .centred-vertically-item:nth-child(4n):before {
+.items-have-border-line > div:first-child:before,
+.items-have-border-line > div:nth-child(4n):before {
     left: 0;
 }
 
-.centred-item:nth-child(3n):after, .centred-vertically-item:nth-child(3n):after,
-.centred-item:first-child:before, .centred-vertically-item:first-child:before,
-.centred-item:nth-child(4n):before, .centred-vertically-item:nth-child(4n):before {
+.items-have-border-line > div:nth-child(3n):after,
+.items-have-border-line > div:first-child:before,
+.items-have-border-line > div:nth-child(4n):before {
     top: 0;
     content: '';
     background: red;
     width: 5px;
     height: 100%;
     position: absolute;
+}
+.container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.container > div{
+    padding: 0.5%;
+    margin: 1%;
+    flex-direction: column;
+    display: flex;
+    background-color: pink;
+    position: relative;
+}
+.container-1 > div{
+    width: 100%;
+}
+
+.container-3 > div{
+    width: 30%;
+    height: 200px;
+}
+.center-horizontal-content > div{
+    text-align: center;
+}
+.center-vertical-content > div{
+    justify-content: center;
 }

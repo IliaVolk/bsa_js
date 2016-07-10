@@ -1,3 +1,41 @@
+@media screen and (min-width: 600px) {
+    @keyframes resize {
+        from {
+            width: 60px;
+        }
+        to {
+            width: 250px;
+        }
+    }
+    @keyframes resize-back {
+        from {
+            width: 250px;
+        }
+        to {
+            width: 60px;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    @keyframes resize {
+        from {
+            width: 60px;
+        }
+        to {
+            width: 140px;
+        }
+    }
+    @keyframes resize-back {
+        from {
+            width: 140px;
+        }
+        to {
+            width: 60px;
+        }
+    }
+}
+
 .form-search {
     display: inline-block;
     background: -moz-linear-gradient(#D3D3D3, #CACACA 50%, #A9A9A9 50%, #9B9B9B);
@@ -13,7 +51,7 @@
     height: 32px;
     line-height: 32px;
     font: 13px Helvetica, Arial, sans-serif;
-    color:#6E7074;
+    color: #6E7074;
     text-shadow: 0 1px 0 #FFF;
     -moz-transition: all .2s ease-out;
     -webkit-transition: all .2s ease-out;
@@ -31,8 +69,12 @@
     box-shadow: inset 0 1px 1px #575555, 0 1px 0 #FFF;
 }
 
+.form-search input:not(:focus) {
+    -webkit-animation: resize-back 0.5s forwards;
+}
+
 .form-search input:focus {
-    width: 160px;
+    -webkit-animation: resize 0.5s forwards;
     box-shadow: inset 0 1px 1px #46575b, 0 1px 0 #FFF;
     color: #25464D;
     background-image: url("http://3.bp.blogspot.com/-4w14hQHr5yQ/Tgm6u7KwUkI/AAAAAAAACAI/Hu2poBOPx3g/s1600/search.png"), -moz-linear-gradient(#9CC2CA, #DFECEF);

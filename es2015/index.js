@@ -9,7 +9,7 @@ class Fighter {
      * @param {number} power
      * @param {number} health
      */
-    constructor(name, power, health) {
+    constructor(name = "Fighter", power = 1, health = 100) {
         this.name = name;
         this.power = power;
         this.health = health;

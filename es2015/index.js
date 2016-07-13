@@ -40,9 +40,7 @@ class Fighter {
         return `${this.health}/${this.maxHealth}`;
     }
 }
-/**
- * @class ImprovedFighter extends Fighter
- */
+
 class ImprovedFighter extends Fighter {
     /**
      * @param {string} name
@@ -102,10 +100,10 @@ const doHit = (source, target, point) => {
  * @param {ImprovedFighter|Fighter} improvedFighter
  * @param {Array<number>} points
  */
-var fight = (fighter, improvedFighter, ...points) => {
+let fight = (fighter, improvedFighter, ...points) => {
     console.log(`Begins battle between ${fighter.name} and ${improvedFighter.name}`);
     let doBattle = () => {
-        for (var i = 0; i < points.length; i += 2) {
+        for (let i = 0; i < points.length; i += 2) {
             doHit(fighter, improvedFighter, points[i]);
             if (i + 1 < points.length)
                 doHit(improvedFighter, fighter, points[i + 1]);
@@ -123,11 +121,11 @@ var fight = (fighter, improvedFighter, ...points) => {
     }
 };
 
-var fighter = new Fighter("fighter", 2, 100);
+let fighter = new Fighter("fighter", 2, 100);
 
-var improvedFighter = new ImprovedFighter("improvedFighter", 3, 100);
+let improvedFighter = new ImprovedFighter("improvedFighter", 3, 100);
 fight(fighter, improvedFighter, 25, 13, 45, 20, 10, 25);
 
-var fighter2 = new Fighter("fighter2", 3, 200);
-var fighter3 = new Fighter("fighter3", 4, 300);
+let fighter2 = new Fighter("fighter2", 3, 200);
+let fighter3 = new Fighter("fighter3", 4, 300);
 fight(fighter2, fighter3, 25, 31, 1);

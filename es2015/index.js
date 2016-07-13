@@ -49,7 +49,7 @@ class ImprovedFighter extends Fighter {
      * @param {number} power
      * @param {number} health
      */
-    constructor(name, power, health) {
+    constructor(name = "Improved Fighter", power = 2, health = 150) {
         super(name, power, health);
     }
 

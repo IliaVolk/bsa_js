@@ -16,12 +16,23 @@ class Fighter {
         this.maxHealth = health;
     }
 
+    isDead() {
+        return this.health <= 0;
+    }
     /**
      * @param {number} damage
      * @return {Fighter} this
      */
     setDamage(damage) {
         this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0;
+            /*Было бы логичнее генерировать здесь FighterDeadException,
+             но неизвесно кто наносил урон, а нам нужно определить
+             победителя. Поскольку Fighter используется только в "сражениях"
+             1 на 1, достаточно еще раз проверить условие смерти в методе "hit"*/
+        }
+        console.log(`${this.name}'s health is ${this.healthDesc()} now`);
         return this;
     }
 
@@ -32,8 +43,13 @@ class Fighter {
      */
     hit(enemy, point) {
         let damage = point * this.power;
+        console.log(`${this.name} (${enemy.healthDesc()}) ` +
+            `hits ${enemy.name} (${enemy.healthDesc()}) ` +
+            `for ${damage} damage`);
         enemy.setDamage(damage);
-        console.log(`${this.name}'s health is now ${this.healthDesc()}`);
+        if (enemy.isDead()) {
+            throw new GotWinnerException(this, enemy);
+        }
         return this;
     }
 
@@ -82,20 +98,6 @@ class GotWinnerException /*extends Error*/ {
     }
 }
 /**
- * @param {Fighter} source
- * @param {Fighter} target
- * @param {number} point
- */
-const doHit = (source, target, point) => {
-    console.log(`${source.name} (${source.healthDesc()}) ` +
-        `hits ${target.name} (${target.healthDesc()}) ` +
-        `on point ${point}`);
-    source.hit(target, point);
-    if (target.health <= 0) {
-        throw new GotWinnerException(source, target);
-    }
-};
-/**
  * @param {Fighter} fighter
  * @param {ImprovedFighter|Fighter} improvedFighter
  * @param {Array<number>} points
@@ -104,9 +106,9 @@ let fight = (fighter, improvedFighter, ...points) => {
     console.log(`Begins battle between ${fighter.name} and ${improvedFighter.name}`);
     let doBattle = () => {
         for (let i = 0; i < points.length; i += 2) {
-            doHit(fighter, improvedFighter, points[i]);
+            fighter.hit(improvedFighter, points[i]);
             if (i + 1 < points.length)
-                doHit(improvedFighter, fighter, points[i + 1]);
+                improvedFighter.hit(fighter, points[i + 1]);
         }
     };
     try {

@@ -1,0 +1,21 @@
+﻿
+ui v1
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	modified:   .idea/encodings.xml
+#	new file:   .idea/jsLibraryMappings.xml
+#	deleted:    .idea/misc.xml
+#	modified:   .idea/vcs.xml
+#	new file:   ui/form-search.css
+#	new file:   ui/index.css
+#	new file:   ui/index.html
+#	new file:   ui/nav.css
+#
+# Untracked files:
+#	.idea/workspace.xml
+#
+

@@ -33,6 +33,7 @@ class Fighter {
     hit(enemy, point) {
         let damage = point * this.power;
         enemy.setDamage(damage);
+        console.log(`${this.name}'s health is now ${this.healthDesc()}`);
         return this;
     }
 
@@ -90,7 +91,6 @@ const doHit = (source, target, point) => {
         `hits ${target.name} (${target.healthDesc()}) ` +
         `on point ${point}`);
     source.hit(target, point);
-    console.log(`${target.name}'s health is now ${target.healthDesc()}`);
     if (target.health <= 0) {
         throw new GotWinnerException(source, target);
     }
